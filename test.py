@@ -15,7 +15,7 @@ def main():
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=2, pin_memory=True, prefetch_factor=8)
     
     # load trained model
-    model = ResNeXt_CIFAR(num_classes=10, scale_factor=3.75, cardinality=8, block_counts=[3,3,3])
+    model = ResNeXt_CIFAR()
     model.load_state_dict(torch.load(best_model, map_location=device))
     model = model.to(device)
     model.eval()

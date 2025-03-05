@@ -1,5 +1,6 @@
-import numpy as np
 import torch
+import numpy as np
+from torchsummary import summary
 
 class EarlyStopping:
     def __init__(self, patience=20, verbose=False, delta=0):

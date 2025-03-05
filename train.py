@@ -99,7 +99,8 @@ def val_one_epoch(model, loader, criterion, device, epoch_desc="Val"):
 def train_and_validate(train_dataset, val_file, max_epochs=200, lr=0.1, patience=20, device=None, val_transform=None):
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = ResNeXt_CIFAR(num_classes=10, scale_factor=3.75, cardinality=8, block_counts=[3,3,3])
+    # model = ResNeXt_CIFAR(num_classes=10, scale_factor=3.75, cardinality=8, block_counts=[3,3,3])
+    model = ResNeXt_CIFAR()
     if torch.cuda.device_count() > 1:
         model = nn.DataParallel(model)
     model = model.to(device)
