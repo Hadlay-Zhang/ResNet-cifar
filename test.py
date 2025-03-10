@@ -12,7 +12,7 @@ from torchvision.transforms import ToTensor
 def main():
     # parse args
     parser = argparse.ArgumentParser(description="Test on CIFAR-10")
-    parser.add_argument('--model', type=str, default='resnet18', choices=['resnet18', 'resnext18', 'se-resnet18'], help="Model architecture to use")
+    parser.add_argument('--model', type=str, default='resnet18', choices=['resnet18', 'resnext18', 'se-resnet18', 'wide-resnet18', 'shake-wide-resnet18'], help="Model architecture to use")
     parser.add_argument('--batch', type=int, default=128, help="Batch size")
     parser.add_argument('--use_amp', action='store_true', help="Use automatic mixed precision")
     parser.add_argument('--use_mixup', action='store_true', help="Use mix up augmentation")

@@ -13,7 +13,7 @@ import datetime
 def main():
     # parse args
     parser = argparse.ArgumentParser(description="Train a CIFAR-10 model")
-    parser.add_argument('--model', type=str, default='resnet18', choices=['resnet18', 'resnext18', 'se-resnet18'], help="Model architecture to use")
+    parser.add_argument('--model', type=str, default='resnet18', choices=['resnet18', 'resnext18', 'se-resnet18', 'wide-resnet18', 'shake-wide-resnet18'], help="Model architecture to use")
     parser.add_argument('--max_epochs', type=int, default=300, help="Maximum number of training epochs")
     parser.add_argument('--lr', type=float, default=0.1, help="Learning rate (default: 0.1)")
     parser.add_argument('--patience', type=int, default=30, help="Patience for early stopping (default: 20)")
