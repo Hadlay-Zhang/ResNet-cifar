@@ -1,22 +1,35 @@
 import torch
+import argparse
 import pandas as pd
 from torch.utils.data import DataLoader
 from utils import *
 from config import *
 from dataset import CIFAR10PredictionDataset
-from model import ResNeXt_CIFAR
+from models.model_factory import model_factory
 from torchvision.transforms import ToTensor
 
 
 def main():
+    # parse args
+    parser = argparse.ArgumentParser(description="Test on CIFAR-10")
+    parser.add_argument('--model', type=str, default='resnet18', choices=['resnet18', 'resnext18', 'se-resnet18'], help="Model architecture to use")
+    parser.add_argument('--batch', type=int, default=128, help="Batch size")
+    parser.add_argument('--use_amp', action='store_true', help="Use automatic mixed precision")
+    parser.add_argument('--use_mixup', action='store_true', help="Use mix up augmentation")
+    parser.add_argument('--num_workers', type=int, default=4, help="Number of workers for data loader")
+    parser.add_argument('--prefetch_factor', type=int, default=8, help="Prefetch factor for data")
+    parser.add_argument('--seed', type=int, default=42, help="Random seed")
+    parser.add_argument('--best_model', type=str, help="Path to best model")
+    args = parser.parse_args()
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     test_dataset = CIFAR10PredictionDataset(test_file, transform=ToTensor())
-    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=2, pin_memory=True, prefetch_factor=8)
+    test_loader = DataLoader(test_dataset, batch_size=args.batch, shuffle=False, num_workers=2, pin_memory=True, prefetch_factor=args.prefetch_factor)
     
     # load trained model
-    model = ResNeXt_CIFAR()
-    model.load_state_dict(torch.load(best_model, map_location=device))
+    model = model_factory(args.model)
+    model.load_state_dict(torch.load(args.best_model, map_location=device))
     model = model.to(device)
     model.eval()
 
@@ -31,8 +44,9 @@ def main():
             indices.extend(idx.cpu().numpy())
 
     submission = pd.DataFrame({'ID': indices, 'Label': predictions})
+    pred_csv = f"prediction/{args.model}_submission.csv"
     submission.to_csv(pred_csv, index=False)
-    print("\nTest predictions saved to prediction.csv")
+    print(f"\nTest predictions saved to {pred_csv}.")
     
 if __name__ == '__main__':
     main()
