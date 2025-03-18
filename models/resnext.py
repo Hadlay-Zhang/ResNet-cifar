@@ -139,4 +139,4 @@ class ResNeXt(nn.Module):
         return x
 
 def ResNeXt_18(**kwargs):
-    return ResNeXt(BasicBlock, [64, 96, 128, 192], [2, 2, 2, 2], **kwargs)
+    return ResNeXt(BasicBlock, [64, 64, 128, 224], [2, 2, 2, 2], **kwargs)

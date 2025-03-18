@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 from torch.utils.data import Dataset
 from PIL import Image
+from config import *
 import torchvision.transforms as transforms
 
 def load_cifar_batch(file):
@@ -25,7 +26,7 @@ class CIFAR10Dataset(Dataset):
         self.transform = transform
         self.base_transform = transforms.Compose([
             transforms.ToTensor(),
-            transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5))
+            normalizer
         ])
         
     def __len__(self):

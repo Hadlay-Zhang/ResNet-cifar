@@ -1,5 +1,8 @@
 import torch
 import os
+from torchvision.transforms import v2
+
+normalizer = v2.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 
 # paths
 cifar10_dir = os.path.join('dataset', 'cifar-10-python', 'cifar-10-batches-py')

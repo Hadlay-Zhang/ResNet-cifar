@@ -8,7 +8,7 @@ def conv3x3(in_planes, out_planes, stride=1):
 
 # SE Block
 class SE_Block(nn.Module):
-    def __init__(self, channels, reduction=16):
+    def __init__(self, channels, reduction=8):
         super(SE_Block, self).__init__()
         self.squeeze = nn.AdaptiveAvgPool2d(1)
         self.excitation = nn.Sequential(
@@ -27,7 +27,7 @@ class SE_Block(nn.Module):
 class SEBasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None, reduction=16):
+    def __init__(self, inplanes, planes, stride=1, downsample=None, reduction=8):
         super(SEBasicBlock, self).__init__()
         self.conv1 = conv3x3(inplanes, planes, stride)
         self.bn1 = nn.BatchNorm2d(planes)
@@ -119,4 +119,4 @@ class ResNet(nn.Module):
         return x
 
 def SE_ResNet_18():
-    return ResNet(SEBasicBlock, [64, 96, 232, 268], [2, 2, 2, 2])
+    return ResNet(SEBasicBlock, [64, 128, 232, 256], [2, 2, 2, 2])

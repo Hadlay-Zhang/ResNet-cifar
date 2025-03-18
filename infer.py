@@ -6,6 +6,7 @@ from tqdm import tqdm
 import argparse
 import numpy as np
 import random
+from config import *
 from models.model_factory import model_factory
 from dataset import CIFAR10EvalDataset
 import torchvision.transforms as transforms
@@ -70,12 +71,12 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
 def main():
     parser = argparse.ArgumentParser(description="Evaluate a saved CIFAR-10 model on the test set")
     parser.add_argument('--model_path', type=str, required=True, help="Path to the saved .pth model file")
-    parser.add_argument('--model', type=str, default='resnet18', choices=['se-resnet18', 'resnet18', 'resnext18', 'wide-resnet18', 'shake-wide-resnet18'], help="Model architecture to use")
+    parser.add_argument('--model', type=str, default='resnet18', choices=['se-resnet18', 'resnet18', 'resnext18', 'wide-resnet18', 'shake-wide-resnet18', 'preact-resnet18'], help="Model architecture to use")
     parser.add_argument('--batch', type=int, default=128, help="Batch size for evaluation")
     parser.add_argument('--num_workers', type=int, default=4, help="Number of workers for DataLoader")
     parser.add_argument('--prefetch_factor', type=int, default=8, help="Prefetch factor for DataLoader")
     parser.add_argument('--use_amp', action='store_true', help="Use automatic mixed precision for evaluation")
-    parser.add_argument('--seed', type=int, default=42, help="Random seed")
+    parser.add_argument('--seed', type=int, help="Random seed")
     args = parser.parse_args()
 
     torch.manual_seed(args.seed)
@@ -97,7 +98,7 @@ def main():
 
     val_transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5))
+        normalizer
     ])
     val_file = os.path.join('dataset', 'cifar-10-python', 'cifar-10-batches-py', 'test_batch')
     val_dataset = CIFAR10EvalDataset(val_file, transform=val_transform)

@@ -8,6 +8,8 @@ import random
 from models.model_factory import model_factory
 from utils import EarlyStopping, print_model
 from dataset import CIFAR10EvalDataset
+from torchvision.transforms import v2
+from torch.utils.data import default_collate
 
 # mixup
 def mixup_data(x, y, alpha=1.0):
@@ -99,11 +101,12 @@ def val_one_epoch(model, loader, criterion, device, args, epoch_desc="Val"):
 
 def train_and_validate(train_dataset, val_file, args, device=None, val_transform=None):
     # set random seed
-    torch.manual_seed(args.seed)
-    np.random.seed(args.seed)
-    random.seed(args.seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(args.seed)
+    if args.seed is not None:
+        torch.manual_seed(args.seed)
+        np.random.seed(args.seed)
+        random.seed(args.seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(args.seed)
     # load arguments
     model_name = args.model
     max_epochs = args.max_epochs

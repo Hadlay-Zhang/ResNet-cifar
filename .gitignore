@@ -3,3 +3,6 @@ dataset/
 logs/
 prediction/
 *.png
+*.csv
+.ipynb_checkpoints
+training_logs
